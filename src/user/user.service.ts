@@ -25,4 +25,30 @@ export class UserService {
       where: eq(users.email, email),
     });
   }
+
+  async update(
+    id: number,
+    updates: Partial<{ email: string; password: string }>,
+  ) {
+    const [updateUser] = await this.database.db
+      .update(users)
+      .set(updates)
+      .where(eq(users.id, id))
+      .returning();
+
+    return updateUser;
+  }
+
+  async delete(id: number) {
+    const result = await this.database.db
+      .delete(users)
+      .where(eq(users.id, id))
+      .returning();
+
+    if (!result || result.length === 0) {
+      throw new Error(`User with id ${id} not found`);
+    }
+
+    return result;
+  }
 }
