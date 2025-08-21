@@ -11,6 +11,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
+import { error } from 'console';
 
 @Controller('user')
 export class UserController {
@@ -41,10 +42,11 @@ export class UserController {
     return await this.userService.update(Number(id), updateDto);
   }
 
-  @Delete('id')
+  @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id') id: string) {
     const UserId = parseInt(id, 10);
+
     try {
       await this.userService.delete(UserId);
     } catch (error) {
