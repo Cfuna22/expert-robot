@@ -11,7 +11,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { error } from 'console';
 
 @Controller('user')
 export class UserController {
