@@ -6,6 +6,9 @@ import {
   Body,
   Put,
   Delete,
+  HttpCode,
+  HttpStatus,
+  NotFoundException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 
@@ -20,7 +23,7 @@ export class UserController {
     return await this.userService.create(email, password);
   }
 
-  @Get('id')
+  @Get(':id')
   async findAll(@Param('id') id: string) {
     return await this.userService.findById(Number(id));
   }
@@ -39,7 +42,16 @@ export class UserController {
   }
 
   @Delete('id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id') id: string) {
-    return await this.userService.delete(+id);
+    const UserId = parseInt(id, 10);
+    try {
+      await this.userService.delete(UserId);
+    } catch (error) {
+      if (error.message.includes('not found')) {
+        throw new NotFoundException(`User with id ${UserId} not found`);
+      }
+      throw error;
+    }
   }
 }
