@@ -7,6 +7,8 @@ import {
   Patch,
   Delete,
   NotFoundException,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { ClientService } from './client.service';
 // import { error } from 'console';
@@ -41,13 +43,15 @@ export class ClientController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id') id: number) {
     try {
       return await this.clientServe.delete(id);
-    } catch (Error.message.includes('not found')) {
-      throw new NotFoundException(`User id: ${id} not  found`);
+    } catch (error) {
+      if (error.onmessage.includes('not found')) {
+        throw new NotFoundException(`User id: ${id} not  found`);
+      }
+      throw error;
     }
-
-    throw Error;
   }
 }
