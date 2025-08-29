@@ -35,10 +35,10 @@ export class UserController {
 
   @Put(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateDto: { email?: string; password?: string },
   ) {
-    return await this.userService.update(Number(id), updateDto);
+    return await this.userService.update(id, updateDto);
   }
 
   @Delete(':id')
