@@ -48,7 +48,7 @@ export class ClientController {
     try {
       return await this.clientServe.delete(id);
     } catch (error) {
-      if (error.onmessage.includes('not found')) {
+      if (error.message.includes('not found')) {
         throw new NotFoundException(`User id: ${id} not  found`);
       }
       throw error;
